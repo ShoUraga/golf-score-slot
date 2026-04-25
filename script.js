@@ -326,11 +326,34 @@
               reel.root.classList.remove('is-shake');
               void reel.root.offsetWidth;
               reel.root.classList.add('is-shake');
-              await reel.moveTo(
-                firstStepY + (i + 1) * cell,
-                stepMoveMs,
-                'cubic-bezier(.2,.9,.3,1)',
-              );
+
+              // step毎の移動中煽り文 (stepMoveMessages 配列が指定されていれば差し替え)
+              const moveMsgArr = state.cfg.hypeMessages.stepMoveMessages;
+              const moveMsg =
+                Array.isArray(moveMsgArr) && moveMsgArr[i] ? moveMsgArr[i] : null;
+              if (moveMsg && state.cfg.effects.hypeText) setHype(moveMsg);
+
+              // step毎の移動時間override (decoyStepMoveDurations)
+              const moveDurArr = dcfg.decoyStepMoveDurations;
+              const moveDur =
+                Array.isArray(moveDurArr) && moveDurArr[i] ? moveDurArr[i] : stepMoveMs;
+
+              const fromYStep = firstStepY + i * cell;
+              const targetYStep = firstStepY + (i + 1) * cell;
+
+              if (moveMsg) {
+                // 凝った "ためらい" 移動: 50%まで進む → タメ → 残りを進む。
+                // 煽り文を読む時間と「決まりかけたけど…さらに進む」感の両立。
+                const midY = fromYStep + (targetYStep - fromYStep) * 0.5;
+                const phase1 = Math.floor(moveDur * 0.4);
+                const pause = Math.floor(moveDur * 0.18);
+                const phase2 = Math.max(80, moveDur - phase1 - pause);
+                await reel.moveTo(midY, phase1, 'cubic-bezier(.25,.7,.4,.95)');
+                await wait(pause);
+                await reel.moveTo(targetYStep, phase2, 'cubic-bezier(.3,.05,.4,1)');
+              } else {
+                await reel.moveTo(targetYStep, moveDur, 'cubic-bezier(.2,.9,.3,1)');
+              }
             }
           }
           // ループ終了時点で decoyY に到達済み

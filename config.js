@@ -67,6 +67,7 @@ window.SLOT_CONFIG = {
       decoyStepCount: 4,         // [decoy時のみ] 偽停止までに何回ステップ停止するか。0で段階停止なし
       decoyStepHoldMs: 1000,      // [decoy時のみ] 各ステップで止まる時間
       decoyStepMoveMs: 500,      // [decoy時のみ] 次のステップへカチッと進む時間
+      decoyStepMoveDurations: [null, null, 1800, null], // [decoy時のみ] step毎の移動時間override(ms)。null=decoyStepMoveMsを使う
       decoyResistHoldMs: 2000,   // [decoy時のみ] 偽停止の"直前"で枠がガタガタ震えて耐える演出の時間。0で無効
       decoyGiveInMoveMs: 1500,   // [decoy時のみ] 耐え切れずに偽停止位置へジワジワ屈する時の所要時間（大きいほどゆっくり）
       decoyResistSteps: [1, 3],  // [decoy時のみ] resist演出を入れるstepのインデックス(0-based)。
@@ -109,6 +110,12 @@ window.SLOT_CONFIG = {
     afterResistMessages: [                              // [decoy時のみ] resist後の通常step中に表示。resistMessagesと同じ順番。null/未指定なら差し替えなし
       '残念…',                                          //   - 1番目のresist後 (digit 3 hold中)
       null,                                             //   - 2番目のresist後 (使われない: 直後にdecoy hold)
+    ],
+    stepMoveMessages: [                                 // [decoy時のみ] step毎の "移動中" 煽り文。null/未指定なら差し替えなし
+      null,                                             //   - step 0 (digit 1→2の移動中)
+      null,                                             //   - step 1 (resist管轄なので使われない)
+      'え…まだ続くの…？',                                //   - step 2 (digit 3→4の移動中)
+      null,                                             //   - step 3 (resist管轄なので使われない)
     ],
     decoy: 'ゴールデンウィークはおあずけ…', // [decoy時のみ] 偽停止のときに表示される煽り文
     return: 'おや…！？数字が動いてる…！？',  // [decoy時のみ] 偽停止 → 真の数字へ戻る/進む間に表示
