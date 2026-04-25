@@ -66,6 +66,9 @@ window.SLOT_CONFIG = {
       decoyStepMoveMs: 500,      // [decoy時のみ] 次のステップへカチッと進む時間
       decoyResistHoldMs: 2000,   // [decoy時のみ] 偽停止の"直前"で枠がガタガタ震えて耐える演出の時間。0で無効
       decoyGiveInMoveMs: 1500,   // [decoy時のみ] 耐え切れずに偽停止位置へジワジワ屈する時の所要時間（大きいほどゆっくり）
+      decoyResistSteps: [1, 3],  // [decoy時のみ] resist演出を入れるstepのインデックス(0-based)。
+                                  //   stepCount=4, decoyDigit=5 のとき [1, 3] は digit 2 と digit 4 で踏ん張る。
+                                  //   未指定なら最終stepだけ(=従来動作)。
       // 他stopTypeに切り替える時に使うフィールド（今は無視されます）
       overshootCount: 5,         // ※stopType=overshootのみ
       bounceBackCount: 3,        // ※stopType=overshootのみ
@@ -98,6 +101,6 @@ window.SLOT_CONFIG = {
     resist: '耐えてくれーーッ…！踏ん張れーーッ…！',  // [decoy時のみ] 偽停止直前の "耐えてる" 演出中に表示
     decoy: 'ゴールデンウィークはおあずけ…', // [decoy時のみ] 偽停止のときに表示される煽り文
     return: 'おや…！？数字が動いてる…！？',  // [decoy時のみ] 偽停止 → 真の数字へ戻る/進む間に表示
-    final: 'おあずけ回避ーーーッ！！！！！！',
+    final: 'おあずけ回避ーーーッ！！！！！！🎉🎉🎉',
   },
 };

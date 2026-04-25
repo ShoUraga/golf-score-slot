@@ -263,14 +263,25 @@
         const decoyY = 3 * CELLS_PER_LOOP * cell + decoyDigit * cell;
 
         if (stepCount > 0) {
+          // resist 演出を入れる step インデックスのSet。
+          // config 未指定なら最終ステップだけ (=従来動作)。
+          const resistStepsRaw = Array.isArray(dcfg.decoyResistSteps)
+            ? dcfg.decoyResistSteps
+            : [stepCount - 1];
+          const resistSteps = new Set(
+            resistStepsRaw.filter(
+              (n) => Number.isInteger(n) && n >= 0 && n < stepCount,
+            ),
+          );
+
           // 段階停止: 偽停止位置の手前 (decoyDigit - stepCount) から1セルずつ刻んで decoyY へ
           const firstStepY = decoyY - stepCount * cell;
           // まず最初のステップ位置までスーッと減速
           await reel.moveTo(firstStepY, arriveMs, easing);
           // 各ステップで止まって → 軽くシェイク → 1セル進む を繰り返す
           for (let i = 0; i < stepCount; i++) {
-            const isLastStep = i === stepCount - 1;
-            if (isLastStep && resistHoldMs > 0) {
+            const doResist = resistSteps.has(i) && resistHoldMs > 0;
+            if (doResist) {
               // 偽停止の直前: ガタガタ震えて "耐えてる" 風 → ジワジワ屈して偽停止位置へ
               reel.root.classList.remove('is-shake');
               void reel.root.offsetWidth;
