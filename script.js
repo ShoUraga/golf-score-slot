@@ -383,6 +383,22 @@
         // ぐらぐら → 本当の数字へ動き出す
         await reel.moveTo(finalY, dur, returnEasing);
 
+        // ★ 着地後の "もう一個進む…？" 風の不安定な揺れ (uncertainty)。
+        //   backward なら次の数字方向(=Y減少, より小さいdigit)へ覗き、forwardなら逆方向。
+        //   amp/ms どちらかを 0 にすれば無効化（=元の挙動）。
+        const endAmpPx = Math.max(0, dcfg.decoyEndUncertaintyAmpPx | 0);
+        const endTotalMs = Math.max(0, dcfg.decoyEndUncertaintyMs | 0);
+        if (endAmpPx > 0 && endTotalMs > 0) {
+          const dipDir = dir === 'backward' ? -1 : 1;
+          // 約 55%/45% で2サイクル(2回目は半分の振幅で収束感)
+          const cycle1 = Math.max(120, Math.floor(endTotalMs * 0.55));
+          const cycle2 = Math.max(100, Math.floor(endTotalMs * 0.45));
+          await reel.moveTo(finalY + dipDir * endAmpPx, Math.floor(cycle1 * 0.5), 'ease-in-out');
+          await reel.moveTo(finalY, Math.ceil(cycle1 * 0.5), 'cubic-bezier(.34,1.36,.64,1)');
+          await reel.moveTo(finalY + dipDir * endAmpPx * 0.5, Math.floor(cycle2 * 0.5), 'ease-in-out');
+          await reel.moveTo(finalY, Math.ceil(cycle2 * 0.5), 'cubic-bezier(.34,1.36,.64,1)');
+        }
+
         // 着地で激アツ解除 → ピクッと一発インパクトのシェイクで締める
         reel.root.classList.remove('is-burst');
         void reel.root.offsetWidth;

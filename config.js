@@ -60,6 +60,9 @@ window.SLOT_CONFIG = {
       decoyReturnMsPerCell: 1000, // [decoy時のみ] 戻る/進む時の1数字あたりの所要時間。大きいほどゆっくり数字が見える
       decoyWobbleMs: 700,        // [decoy時のみ] 戻り出す直前に "5でグラグラして動きそう" な振動を見せる時間。0で無効
       decoyWobbleAmpPx: 6,       // [decoy時のみ] グラグラの振幅(px)。大きすぎると数字が変わって見えるので注意 (目安: ~10px以下)
+      // 着地後の "もう一個進む…？" 不安定揺れ (3に着地後、2へ進むかどうかわからない感を出す)
+      decoyEndUncertaintyMs: 800,    // [decoy時のみ] 揺れフェーズ全体の時間。【0で無効＝元の挙動】
+      decoyEndUncertaintyAmpPx: 28,  // [decoy時のみ] 次の数字方向に覗く振幅(px)。30程度で隣の数字が頭だけ見える感じ。【0で無効】
       // 段階停止 (カチッカチッと一文字ずつ進んでから偽停止位置に到達する演出)
       decoyStepCount: 4,         // [decoy時のみ] 偽停止までに何回ステップ停止するか。0で段階停止なし
       decoyStepHoldMs: 1000,      // [decoy時のみ] 各ステップで止まる時間
