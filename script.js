@@ -286,9 +286,18 @@
               reel.root.classList.remove('is-shake');
               void reel.root.offsetWidth;
               reel.root.classList.add('is-resist');
-              // "耐えてくれ…ッ" 系の煽り文に切り替え
+              // resist 用の煽り文に切り替え。
+              // hypeMessages.resistMessages 配列が指定されていれば、resistSteps と同じ順番で対応するメッセージを使う。
+              // 配列に該当インデックスが無ければ hypeMessages.resist にフォールバック。
               if (state.cfg.effects.hypeText) {
-                const resistMsg = state.cfg.hypeMessages.resist;
+                const resistIdx = resistStepsRaw.indexOf(i);
+                const arr = state.cfg.hypeMessages.resistMessages;
+                let resistMsg = null;
+                if (Array.isArray(arr) && resistIdx >= 0 && arr[resistIdx]) {
+                  resistMsg = arr[resistIdx];
+                } else {
+                  resistMsg = state.cfg.hypeMessages.resist;
+                }
                 if (resistMsg) setHype(resistMsg);
               }
               await wait(resistHoldMs);
