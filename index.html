@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>本日のゴルフスコア鑑定</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <h1 class="title" id="title">本日のゴルフスコア鑑定</h1>
+      <p class="hype" id="hype">果たして今日のスコアは…！？</p>
+
+      <!-- 視覚的並びは「百|十|一」で固定（停止順とは独立） -->
+      <div class="reels" id="reels" aria-label="スコアスロット">
+        <div class="reel" data-place="hundreds">
+          <div class="reel-window">
+            <div class="strip"></div>
+          </div>
+          <div class="sparkle" aria-hidden="true"></div>
+          <div class="reel-label">百</div>
+        </div>
+        <div class="reel" data-place="tens">
+          <div class="reel-window">
+            <div class="strip"></div>
+          </div>
+          <div class="sparkle" aria-hidden="true"></div>
+          <div class="reel-label">十</div>
+        </div>
+        <div class="reel" data-place="ones">
+          <div class="reel-window">
+            <div class="strip"></div>
+          </div>
+          <div class="sparkle" aria-hidden="true"></div>
+          <div class="reel-label">一</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="start" class="start-btn" type="button">
+          鑑定スタート
+        </button>
+        <button id="reset" class="reset-btn" type="button" hidden>
+          もう一度
+        </button>
+      </div>
+    </main>
+
+    <div class="bg-flash" id="bgFlash" aria-hidden="true"></div>
+    <div class="confetti-layer" id="confetti" aria-hidden="true"></div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
