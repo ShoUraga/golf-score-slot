@@ -103,8 +103,12 @@ window.SLOT_CONFIG = {
     afterOnes: '一の位もキターーッ！運命の十の位は…！',
     resist: '耐えてくれーーッ…！踏ん張れーーッ…！',  // [decoy時のみ] resist演出のデフォルト煽り文 (resistMessagesで上書きされなかった時のフォールバック)
     resistMessages: [                                   // [decoy時のみ] decoyResistStepsと同じ順番で対応するresist時メッセージ。
-      'セーターチャンス到来なるか…？',                   //   - 1番目の resist step (digit 2 → 3)
+      '頼むッ…！',                   //   - 1番目の resist step (digit 2 → 3)
       '耐えてくれーーッ…！踏ん張れーーッ…！',            //   - 2番目の resist step (digit 4 → 5)
+    ],
+    afterResistMessages: [                              // [decoy時のみ] resist後の通常step中に表示。resistMessagesと同じ順番。null/未指定なら差し替えなし
+      '残念…',                                          //   - 1番目のresist後 (digit 3 hold中)
+      null,                                             //   - 2番目のresist後 (使われない: 直後にdecoy hold)
     ],
     decoy: 'ゴールデンウィークはおあずけ…', // [decoy時のみ] 偽停止のときに表示される煽り文
     return: 'おや…！？数字が動いてる…！？',  // [decoy時のみ] 偽停止 → 真の数字へ戻る/進む間に表示

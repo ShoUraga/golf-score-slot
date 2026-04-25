@@ -278,6 +278,8 @@
           const firstStepY = decoyY - stepCount * cell;
           // まず最初のステップ位置までスーッと減速
           await reel.moveTo(firstStepY, arriveMs, easing);
+          // resist が終わった直後の通常 step で afterResistMessages を出すための追跡用
+          let prevResistIdx = -1;
           // 各ステップで止まって → 軽くシェイク → 1セル進む を繰り返す
           for (let i = 0; i < stepCount; i++) {
             const doResist = resistSteps.has(i) && resistHoldMs > 0;
@@ -308,7 +310,17 @@
                 giveInMoveMs,
                 'cubic-bezier(.6,.05,.4,1)',
               );
+              // 直後の通常 step で afterResistMessages を表示するためにインデックスを記録
+              prevResistIdx = resistStepsRaw.indexOf(i);
             } else {
+              // resist 直後の通常 step なら "残念…" 系の煽り文に差し替え
+              if (prevResistIdx >= 0 && state.cfg.effects.hypeText) {
+                const arr = state.cfg.hypeMessages.afterResistMessages;
+                if (Array.isArray(arr) && arr[prevResistIdx]) {
+                  setHype(arr[prevResistIdx]);
+                }
+              }
+              prevResistIdx = -1;
               // 通常ステップ: 静かに止まって → 軽くシェイク → 1セル進む
               await wait(stepHoldMs);
               reel.root.classList.remove('is-shake');
